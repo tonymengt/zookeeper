@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(express.static('public'))
 
 const { animals } = require('./data/animal')
 
@@ -113,6 +114,24 @@ app.post('/api/animals', (req, res) => {
     const animal = createNewAnimal(req.body, animals)
     res.json(animal)
     }
+})
+
+// the is to create the root route or home page of any web application.
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'))
+})
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'))
+})
+
+app.get('/zookeeper', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeeper.html'))
+})
+
+// The * will act as a wildcard, meaning any route that wasn't previously defined will fall under this request
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'))
 })
 
 app.listen(PORT, () => {
